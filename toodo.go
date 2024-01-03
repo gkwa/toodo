@@ -17,6 +17,7 @@ var opts struct {
 	logLevel       slog.Level
 	FileExtensions []string `short:"e" long:"file-extension" description:"File extension to search for" required:"false"`
 	Root           string   `short:"r" long:"root" description:"Root directory for search" required:"false"`
+	DryRun         bool     `short:"d" long:"dry-run" description:"Don't run mdfind, useful with -vv to see what mdfind command was generated" required:"false"`
 }
 
 func Execute() int {
@@ -63,6 +64,11 @@ func run() error {
 	}
 
 	slog.Debug("debug command", "command", cmd.String())
+
+	if opts.DryRun {
+		slog.Debug("exitting early", "message", "dry run is used so skipping mdfind run")
+		return nil
+	}
 
 	output, err := cmd.Run()
 	if err != nil {
