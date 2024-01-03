@@ -2,9 +2,7 @@ package toodo
 
 import (
 	"fmt"
-	"log"
 	"log/slog"
-	"time"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/taylormonacelli/navyloss"
@@ -48,12 +46,13 @@ func parseFlags() error {
 }
 
 func run() error {
-	periodSeconds, err := navyloss.PeriodToSeconds(opts.Args.Period)
+	duration, err := navyloss.DurationFromString(opts.Args.Period)
 	if err != nil {
-		return err
+		return fmt.Errorf("error parsing period: %v", err)
 	}
+	slog.Debug("debug period", "period", duration)
 
-	mdfind := NewMDFind(opts.Root, time.Duration(periodSeconds)*time.Second, opts.FileExtensions)
+	mdfind := NewMDFind(opts.Root, duration, opts.FileExtensions)
 	mdfind.ExpandHomeDir()
 
 	cmd := mdfind.BuildCommand()
@@ -67,12 +66,12 @@ func run() error {
 
 	output, err := cmd.Run()
 	if err != nil {
-		log.Fatalf("Error running mdfind command: %v", err)
+		slog.Error("error running command", "command", cmd.Name, "error", err)
 
 		if stderr := cmd.GetStderr(); stderr != "" {
-			fmt.Printf("mdfind command stderr: %s\n", stderr)
+			slog.Error("command error", "command", cmd.Name, "stderr", stderr)
 		}
-		return err
+		return fmt.Errorf("error running command: %v", err)
 	}
 
 	cmd.Stdout = cmd.GetStdout()
