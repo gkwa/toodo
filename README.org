@@ -13,12 +13,16 @@ runs this:
 mdfind "kMDItemFSContentChangeDate >= $time.now(-3600) && (kMDItemFSName == '*.go' || kMDItemFSName == '*.txt')" -onlyin ~/pdev
 #+end_example
 
+** install
+
+#+begin_example
+make install
+#+end_example
+
 ** usage
 
 Example:
 #+begin_example
-make install
-
 # Most often I want to find go files modified within the last week.
 toodo -p 1w -e=go
 
