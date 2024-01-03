@@ -1,5 +1,4 @@
 * toodo
-
 ** summary
 
 Wrapper around mdfind on macos.
@@ -14,6 +13,33 @@ runs this:
 mdfind "kMDItemFSContentChangeDate >= $time.now(-3600) && (kMDItemFSName == '*.go' || kMDItemFSName == '*.txt')" -onlyin ~/pdev
 #+end_example
 
+** usage
+
+Example:
+#+begin_example
+make install
+
+# Most often I want to find go files modified within the last week.
+toodo -p 1w -e=go
+
+# show help
+toodo -h
+
+# show debug level logs
+toodo -v -v
+
+# find *.go or *.txt files modified within the last 0.001 days
+toodo -v -v -p 0.001d -e=go -e txt
+
+# find files modified within the last 10 minutes
+toodo -p 10m
+
+# find files modified within the last 1 month
+toodo -p 1M
+
+# find *.go modified within the last hour and limit search to ~/pdev dir and all descendants
+toodo -vv -p=1h -e=go --root=~/pdev
+#+end_example
 ** help
 
 #+begin_example
@@ -35,34 +61,3 @@ Help Options:
 [mtm@taylors-MBP-2:toodo(master)]$
 #+end_example
 
-** usage
-
-Example:
-#+begin_example
-make install
-
-# Most often I want to find go files modified within the last week.
-toodo -p 1w -e=go
-
-toodo -h
-toodo -v -v
-toodo -v -v -p 0.001d -e=go
-toodo -p 0.01d -e=go
-toodo -p 10m
-toodo -p 10m -e txt
-toodo -p 10m -e=go
-toodo -p 10m -e=go -e txt
-toodo -p 10m -e=txt
-toodo -p 1d -e=go
-toodo -p 2d
-toodo -p 5h -e=go
-toodo -vv -p 0.01d -e=txt
-toodo -vv -p 0.01d -e=txt -e=go
-toodo -vv -p 0.9d -e=txt -e=go
-toodo -vv -p=0.001d -e=mod
-toodo -vv -p=0.001d -e=mod -r=~/pdev
-toodo -vv -p=10h -e=txt -e=go -e=mod
-toodo -vv -p=1M -e=mod
-toodo -vv -p=1M -e=mod -r=~/pdev
-toodo -vv -p=5h -e=txt -e=go -e=mod
-#+end_example
