@@ -14,7 +14,7 @@ var opts struct {
 	LogFormat      string `long:"log-format" choice:"text" choice:"json" default:"text" description:"Log format"`
 	Verbose        []bool `short:"v" long:"verbose" description:"Show verbose debug information, each -v bumps log level"`
 	logLevel       slog.Level
-	Period         string   `short:"p" long:"period" description:"Time period parameter in the format 1y, 10M, 10m, 200s, 34d, 1y23d, 2d20s, etc." required:"true"`
+	Period         string   `short:"p" long:"period" description:"Time period parameter in the format 1y, 1M10w1m, 10M, 10m, 200s, 34d, 1y23d, 2d20s, etc." required:"true"`
 	FileExtensions []string `short:"e" long:"file-extension" description:"File extension to search for" required:"false"`
 	Root           string   `short:"r" long:"root" description:"Root directory for search" required:"false"`
 }
