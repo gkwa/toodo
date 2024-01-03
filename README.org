@@ -1,0 +1,14 @@
+* toodo
+
+** summary
+
+This is a description of project toodo.
+
+** usage
+
+Example:
+#+begin_example
+make test
+./toodo --help
+./toodo --verbose --verbose # for debug
+#+end_example
