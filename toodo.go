@@ -83,7 +83,9 @@ func run() error {
 	cmd.Stdout = cmd.GetStdout()
 	cmd.Stderr = cmd.GetStderr()
 
-	fmt.Println(output)
+	if output != "" {
+		fmt.Println(output)
+	}
 
 	return nil
 }
