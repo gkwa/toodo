@@ -4,6 +4,16 @@
 
 Wrapper around mdfind on macos.
 
+This
+#+begin_example
+toodo --root=~/pdev --file-extension=go -e=txt -p=1h
+#+end_example
+
+runs this:
+#+begin_example
+mdfind "kMDItemFSContentChangeDate >= $time.now(-3600) && (kMDItemFSName == '*.go' || kMDItemFSName == '*.txt')" -onlyin ~/pdev
+#+end_example
+
 ** usage
 
 Example:
