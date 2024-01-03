@@ -75,5 +75,5 @@ func (c *Command) String() string {
 		return err.Error()
 	}
 
-	return strings.TrimSpace(string(output.String()))
+	return strings.TrimSpace(output.String())
 }
