@@ -6,12 +6,33 @@ Wrapper around mdfind on macos.
 
 This
 #+begin_example
-toodo --root=~/pdev --file-extension=go -e=txt -p=1h
+toodo --root=~/pdev --file-extension=go -e=txt --period=1h
 #+end_example
 
 runs this:
 #+begin_example
 mdfind "kMDItemFSContentChangeDate >= $time.now(-3600) && (kMDItemFSName == '*.go' || kMDItemFSName == '*.txt')" -onlyin ~/pdev
+#+end_example
+
+** help
+
+#+begin_example
+[mtm@taylors-MBP-2:toodo(master)]$ toodo -h
+Usage:
+  toodo [OPTIONS]
+
+Application Options:
+      --log-format=[text|json] Log format (default: text)
+  -v, --verbose                Show verbose debug information, each -v bumps log level
+  -p, --period=                Time period parameter in the format 1y, 10M, 10m, 200s, 34d, 1y23d,
+                               2d20s, etc.
+  -e, --file-extension=        File extension to search for
+  -r, --root=                  Root directory for search
+
+Help Options:
+  -h, --help                   Show this help message
+
+[mtm@taylors-MBP-2:toodo(master)]$
 #+end_example
 
 ** usage
