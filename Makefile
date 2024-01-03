@@ -20,7 +20,7 @@ $(BIN): $(GO_FILES) $(GO_DEPS)
 
 .PHONY: test
 test: $(BIN)
-	./$(BIN) -v -v
+	./$(BIN) --verbose --verbose --period=1d --file-extension=go
 
 .PHONY: install
 install: $(BIN)
