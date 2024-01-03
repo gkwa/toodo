@@ -5,7 +5,7 @@ Wrapper around mdfind on macos.
 
 This
 #+begin_example
-toodo --root=~/pdev --file-extension=go -e=txt --period=1h
+toodo --root=~/pdev --file-extension=go -e=txt 1h
 #+end_example
 
 runs this:
@@ -24,44 +24,40 @@ make install
 Example:
 #+begin_example
 # Most often I want to find go files modified within the last week.
-toodo -p 1w -e=go
+toodo 1w -e=go
 
 # show help
 toodo -h
 
-# show debug level logs
-toodo -v -v
-
 # find *.go or *.txt files modified within the last 0.001 days
-toodo -v -v -p 0.001d -e=go -e txt
+toodo -v -v 0.001d -e=go -e txt
 
 # find files modified within the last 10 minutes
-toodo -p 10m
+toodo 10m
 
 # find files modified within the last 1 month
-toodo -p 1M
+toodo 1M
 
 # find *.go modified within the last hour and limit search to ~/pdev dir and all descendants
-toodo -vv -p=1h -e=go --root=~/pdev
+toodo -vv 1h -e=go --root=~/pdev
 #+end_example
 ** help
 
 #+begin_example
-[mtm@taylors-MBP-2:toodo(master)]$ toodo -h
 Usage:
-  toodo [OPTIONS]
+  toodo [OPTIONS] Period
 
 Application Options:
       --log-format=[text|json] Log format (default: text)
   -v, --verbose                Show verbose debug information, each -v bumps log level
-  -p, --period=                Time period parameter in the format 1y, 10M, 10m, 200s, 34d, 1y23d,
-                               2d20s, etc.
   -e, --file-extension=        File extension to search for
   -r, --root=                  Root directory for search
 
 Help Options:
   -h, --help                   Show this help message
 
-[mtm@taylors-MBP-2:toodo(master)]$
-#+end_example
+Arguments:
+  Period:                      Time period parameter in the format 1y, 1M10w1m, 10M, 10m, 200s, 34d,
+                               1y23d, 2d20s, etc.
 
+#+end_example

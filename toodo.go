@@ -11,10 +11,12 @@ import (
 )
 
 var opts struct {
+	Args struct {
+		Period string `description:"Time period parameter in the format 1y, 1M10w1m, 10M, 10m, 200s, 34d, 1y23d, 2d20s, etc."`
+	} `positional-args:"yes" required:"yes"`
 	LogFormat      string `long:"log-format" choice:"text" choice:"json" default:"text" description:"Log format"`
 	Verbose        []bool `short:"v" long:"verbose" description:"Show verbose debug information, each -v bumps log level"`
 	logLevel       slog.Level
-	Period         string   `short:"p" long:"period" description:"Time period parameter in the format 1y, 1M10w1m, 10M, 10m, 200s, 34d, 1y23d, 2d20s, etc." required:"true"`
 	FileExtensions []string `short:"e" long:"file-extension" description:"File extension to search for" required:"false"`
 	Root           string   `short:"r" long:"root" description:"Root directory for search" required:"false"`
 }
@@ -46,7 +48,7 @@ func parseFlags() error {
 }
 
 func run() error {
-	periodSeconds, err := navyloss.PeriodToSeconds(opts.Period)
+	periodSeconds, err := navyloss.PeriodToSeconds(opts.Args.Period)
 	if err != nil {
 		return err
 	}
