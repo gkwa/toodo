@@ -56,26 +56,13 @@ toodo -p 10m -e=txt
 toodo -p 1d -e=go
 toodo -p 2d
 toodo -p 5h -e=go
-toodo -vv -p 0.01d -e=go
 toodo -vv -p 0.01d -e=txt
 toodo -vv -p 0.01d -e=txt -e=go
-toodo -vv -p 0.05d -e=txt
-toodo -vv -p 0.09d -e=txt
-toodo -vv -p 0.1d -e=txt
-toodo -vv -p 0.3d -e=txt
-toodo -vv -p 0.5d -e=txt
-toodo -vv -p 0.9d -e=txt
 toodo -vv -p 0.9d -e=txt -e=go
 toodo -vv -p=0.001d -e=mod
 toodo -vv -p=0.001d -e=mod -r=~/pdev
 toodo -vv -p=10h -e=txt -e=go -e=mod
 toodo -vv -p=1M -e=mod
-toodo -vv -p=1M -e=mod -h
-toodo -vv -p=1M -e=mod -h -r=~/pdev
 toodo -vv -p=1M -e=mod -r=~/pdev
-toodo -vv -p=1d -e=mod
-toodo -vv -p=1d -e=mod -r=~/pdev
-toodo -vv -p=1d -e=txt -e=go
-toodo -vv -p=5h -e=txt -e=go
 toodo -vv -p=5h -e=txt -e=go -e=mod
 #+end_example
