@@ -2,13 +2,49 @@
 
 ** summary
 
-This is a description of project toodo.
+Wrapper around mdfind on macos.
 
 ** usage
 
 Example:
 #+begin_example
-make test
-./toodo --help
-./toodo --verbose --verbose # for debug
+make install
+
+# Most often I want to find go files modified within the last week.
+toodo -p 1w -e=go
+
+toodo -h
+toodo -v -v
+toodo -v -v -p 0.001d -e=go
+toodo -p 0.01d -e=go
+toodo -p 10m
+toodo -p 10m -e txt
+toodo -p 10m -e=go
+toodo -p 10m -e=go -e txt
+toodo -p 10m -e=txt
+toodo -p 1d -e=go
+toodo -p 2d
+toodo -p 5h -e=go
+toodo -v -p 0.01d -e=go
+toodo -v -p 0.01d -e=txt
+toodo -v -p 0.01d -e=txt -e=go
+toodo -v -p 0.05d -e=txt
+toodo -v -p 0.09d -e=txt
+toodo -v -p 0.1d -e=txt
+toodo -v -p 0.3d -e=txt
+toodo -v -p 0.5d -e=txt
+toodo -v -p 0.9d -e=txt
+toodo -v -p 0.9d -e=txt -e=go
+toodo -v -p=0.001d -e=mod
+toodo -v -p=0.001d -e=mod -r=~/pdev
+toodo -v -p=10h -e=txt -e=go -e=mod
+toodo -v -p=1M -e=mod
+toodo -v -p=1M -e=mod -h
+toodo -v -p=1M -e=mod -h -r=~/pdev
+toodo -v -p=1M -e=mod -r=~/pdev
+toodo -v -p=1d -e=mod
+toodo -v -p=1d -e=mod -r=~/pdev
+toodo -v -p=1d -e=txt -e=go
+toodo -v -p=5h -e=txt -e=go
+toodo -v -p=5h -e=txt -e=go -e=mod
 #+end_example

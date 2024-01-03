@@ -1,15 +1,22 @@
 package toodo
 
 import (
+	"fmt"
+	"log"
 	"log/slog"
+	"time"
 
 	"github.com/jessevdk/go-flags"
+	"github.com/taylormonacelli/navyloss"
 )
 
 var opts struct {
-	LogFormat string `long:"log-format" choice:"text" choice:"json" default:"text" description:"Log format"`
-	Verbose   []bool `short:"v" long:"verbose" description:"Show verbose debug information, each -v bumps log level"`
-	logLevel  slog.Level
+	LogFormat      string `long:"log-format" choice:"text" choice:"json" default:"text" description:"Log format"`
+	Verbose        []bool `short:"v" long:"verbose" description:"Show verbose debug information, each -v bumps log level"`
+	logLevel       slog.Level
+	Period         string   `short:"p" long:"period" description:"Time period parameter in the format 1y, 10M, 10m, 200s, 34d, 1y23d, 2d20s, etc." required:"true"`
+	FileExtensions []string `short:"e" long:"file-extension" description:"File extension to search for" required:"false"`
+	Root           string   `short:"r" long:"root" description:"Root directory for search" required:"false"`
 }
 
 func Execute() int {
@@ -39,10 +46,37 @@ func parseFlags() error {
 }
 
 func run() error {
-	slog.Debug("Debug", "currrent level", opts.logLevel)
-	slog.Info("Info", "currrent level", opts.logLevel)
-	slog.Warn("Warn", "currrent level", opts.logLevel)
-	slog.Error("Error", "currrent level", opts.logLevel)
+	periodSeconds, err := navyloss.PeriodToSeconds(opts.Period)
+	if err != nil {
+		return err
+	}
+
+	mdfind := NewMDFind(opts.Root, time.Duration(periodSeconds)*time.Second, opts.FileExtensions)
+	mdfind.ExpandHomeDir()
+
+	cmd := mdfind.BuildCommand()
+
+	// Conditionally add -onlyin switch based on --root flag
+	if opts.Root != "" {
+		cmd.AddArgument("-onlyin", opts.Root)
+	}
+
+	slog.Debug("debug command", "command", cmd.String())
+
+	output, err := cmd.Run()
+	if err != nil {
+		log.Fatalf("Error running mdfind command: %v", err)
+
+		if stderr := cmd.GetStderr(); stderr != "" {
+			fmt.Printf("mdfind command stderr: %s\n", stderr)
+		}
+		return err
+	}
+
+	cmd.Stdout = cmd.GetStdout()
+	cmd.Stderr = cmd.GetStderr()
+
+	fmt.Println(output)
 
 	return nil
 }
