@@ -49,7 +49,7 @@ func parseFlags() error {
 func run() error {
 	mdfind := mdf.NewMDFind(opts.Root, opts.Args.Period, opts.FileExtensions)
 	cmdString := mdfind.String()
-	fmt.Println(cmdString)
+	mdfind.WriteCommandToFile()
 
 	if !opts.DryRun {
 		_, err := mdfind.Run()
