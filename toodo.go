@@ -5,7 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/taylormonacelli/navyloss"
+	mdf "github.com/taylormonacelli/toodo/mdfind"
 )
 
 var opts struct {
@@ -47,44 +47,16 @@ func parseFlags() error {
 }
 
 func run() error {
-	duration, err := navyloss.DurationFromString(opts.Args.Period)
-	if err != nil {
-		return fmt.Errorf("error parsing period: %v", err)
-	}
-	slog.Debug("debug period", "period", duration)
+	mdfind := mdf.NewMDFind(opts.Root, opts.Args.Period, opts.FileExtensions)
+	cmdString := mdfind.String()
+	fmt.Println(cmdString)
 
-	mdfind := NewMDFind(opts.Root, duration, opts.FileExtensions)
-	mdfind.ExpandHomeDir()
-
-	cmd := mdfind.BuildCommand()
-
-	// Conditionally add -onlyin switch based on --root flag
-	if opts.Root != "" {
-		cmd.AddArgument("-onlyin", opts.Root)
-	}
-
-	slog.Debug("debug command", "command", cmd.String())
-
-	if opts.DryRun {
-		slog.Debug("exitting early", "message", "dry run is used so skipping mdfind run")
-		return nil
-	}
-
-	output, err := cmd.Run()
-	if err != nil {
-		slog.Error("error running command", "command", cmd.Name, "error", err)
-
-		if stderr := cmd.GetStderr(); stderr != "" {
-			slog.Error("command error", "command", cmd.Name, "stderr", stderr)
+	if !opts.DryRun {
+		_, err := mdfind.Run()
+		if err != nil {
+			fmt.Printf("Command failed: %s\n", cmdString)
+			return err
 		}
-		return fmt.Errorf("error running command: %v", err)
-	}
-
-	cmd.Stdout = cmd.GetStdout()
-	cmd.Stderr = cmd.GetStderr()
-
-	if output != "" {
-		fmt.Println(output)
 	}
 
 	return nil

@@ -20,7 +20,7 @@ $(BIN): $(GO_FILES) $(GO_DEPS)
 
 .PHONY: test
 test: $(BIN)
-	./$(BIN) --verbose --verbose --file-extension=go 2d
+	go test ./mdfind
 
 .PHONY: install
 install: $(BIN)
