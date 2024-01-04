@@ -6,9 +6,7 @@ import (
 	"log/slog"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/taylormonacelli/navyloss"
 )
@@ -55,9 +53,14 @@ func (m *MDFind) SetCommand() {
 }
 
 func (m *MDFind) WriteCommandToFile() string {
-	tmpDir := os.TempDir()
-	fileName := fmt.Sprintf("mdfind_command_%d.sh", time.Now().Unix())
-	filePath := filepath.Join(tmpDir, fileName)
+	tempFile, err := os.CreateTemp("", "mdfind-command-*.sh")
+	if err != nil {
+		fmt.Printf("Error creating temp file: %v\n", err)
+		return ""
+	}
+	defer tempFile.Close()
+
+	filePath := tempFile.Name()
 
 	file, err := os.Create(filePath)
 	if err != nil {
@@ -95,14 +98,13 @@ func (m *MDFind) String() string {
 func (m *MDFind) Run() ([]byte, error) {
 	path := m.WriteCommandToFile()
 
-	slog.Debug("Running script", "path", path)
-
 	cmd := exec.Command("bash", "-c", path)
 
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
+	slog.Debug("Running script", "path", path)
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -110,6 +112,8 @@ func (m *MDFind) Run() ([]byte, error) {
 
 	if stderr.String() == "" {
 		fmt.Print(stdout.String())
+
+		slog.Debug("Removing script", "path", path)
 		os.Remove(path)
 	} else {
 		fmt.Println("stderr:", stderr.String())
