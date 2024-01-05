@@ -6,6 +6,8 @@ Wrapper around mdfind on macos.
 This
 #+begin_example
 toodo --root=~/pdev --file-extension=go --file-extension=txt 1h
+# or
+toodo -r ~/pdev -e go -e txt 1h
 #+end_example
 
 runs this:
