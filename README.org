@@ -5,14 +5,14 @@ Wrapper around mdfind on macos.
 
 This
 #+begin_example
-toodo --root=~/pdev --file-extension=go --file-extension=txt 1h
+toodo --root=~/pdev --file-extension=go --file-extension=txt 1w
 # or
 toodo -r ~/pdev -e go -e txt 1h
 #+end_example
 
 runs this:
 #+begin_example
-mdfind "kMDItemFSContentChangeDate >= $time.now(-3600) && (kMDItemFSName == '*.go' || kMDItemFSName == '*.txt')" -onlyin ~/pdev
+mdfind "kMDItemFSContentChangeDate >= $time.now(-604800) && (kMDItemFSName == '*.go' || kMDItemFSName == '*.txt')" -onlyin ~/pdev
 #+end_example
 
 ** install
